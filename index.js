@@ -3,7 +3,7 @@ const buttonTools = $(".ButtonTools");
 
 const analyzeButton = $(".TextZone").find("form");
 const randomTextButton = buttonTools.find("button.RandomText");
-const downloadButton = buttonTools.find("button.DownloadJSON");
+const downloadButton = buttonTools.find("a.DownloadJSON");
 
 analyzeButton.on("submit", analyzeText);
 randomTextButton.on("click", generateRandomText);
@@ -15,8 +15,7 @@ function makeJSONDownloadable(event = null) {
 
 function enableDownloadButton(button) {
   button
-    .prop("disabled", false)
-    .removeClass("btn-secondary")
+    .removeClass("btn-secondary disabled")
     .addClass("btn-success")
     .css("cursor", "pointer");
 }
@@ -132,5 +131,14 @@ function Word(word) {
           }</span>,
        },</span>`.trim()
     );
+  };
+
+  this.jsonFormat = function() {
+    const jsonObject = {};
+    jsonObject["word"] = this.word;
+    jsonObject["length"] = this.length();
+    jsonObject["type"] = this.type;
+
+    return jsonObject;
   };
 }

@@ -20,8 +20,10 @@ body {
   font-style: italic;
 }
 
-.ButtonTools button.DownloadJSON {
+.ButtonTools .DownloadJSON {
+  pointer-events: stroke !important;
   cursor: not-allowed;
+  color: white !important;
 }
 
 .MessagesZone .CustomizedProgress {

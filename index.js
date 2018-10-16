@@ -89,8 +89,19 @@ function setAchievements(finalWords) {
   let achievements = "";
   achievements += achievementCharacters(finalWords);
   achievements += achievementTypes(finalWords);
+  achievements += achievementTimeToRead(finalWords);
 
   achievementsContainer.empty().append(achievements);
+}
+
+function achievementTimeToRead(finalWords) {
+  const numberOfWords = finalWords.filter(word => word.type === "Word").length;
+  let decimal = numberOfWords / 200;
+  let minutes = Math.floor(decimal);
+  let seconds = Math.round(
+    parseFloat("0." + decimal.toString().split(".")[1]) * 0.6 * 100
+  );
+  return `<li class="list-group-item">Read time: <span class="badge badge-primary badge-pill">${minutes} minutes ${seconds} seconds</span></li>`;
 }
 
 function achievementCharacters(finalWords) {

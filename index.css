@@ -2,6 +2,10 @@ body {
   background: #fafafa;
 }
 
+.ErrorMessage {
+  display: none;
+}
+
 .Title {
   font-size: 0.8em;
 }
@@ -19,7 +23,6 @@ body {
 .DisplayZone div[contenteditable] {
   resize: none;
   background-color: #242a30;
-  color: yellow;
   font-weight: bold;
   transition: background-color 0.3s ease;
   height: 500px;
@@ -32,9 +35,18 @@ body {
   background-color: #181c20;
 }
 
-.DisplayZone div[contenteditable] > code span {
-  color: yellow;
+span.JSON-object {
+  color: white;
 }
+
+span.JSON-key {
+  color: #26c6da !important;
+}
+
+span.JSON-value {
+  color: #ffca28 !important;
+}
+
 @media screen and (min-width: 768px) {
   .Title {
     font-size: 1em;

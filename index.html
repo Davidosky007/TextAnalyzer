@@ -1,74 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Muli" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="index.css">
-    <title>Text Overpowered</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Muli" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="index.css">
+        <title>Text Overpowered</title>
+    </head>
 
-<body>
-    <div class="container">
-        <div class="row d-flex align-items-center flex-sm-row-reverse">
-            <div class="col-sm-12 col-md-3 button-tools align-self-center">
-                <button class="btn btn-warning btn-lg btn-block RandomText">Random text</button>
-                <button class="btn btn-secondary btn-lg btn-block disabled">Download JSON</button>
+    <body>
+        <div class="alert alert-danger ErrorMessage" role="alert">
 
-            </div>
-            <div class="col-sm-12 col-md-9">
-                <div class="Title text-center">
-                    <h1>Analyze texts with extreme precision</h1>
-                    <h4 class="my-3">Premium tool chosen by our consumers in 2018</h3>
+        </div>
+        <div class="container-fluid">
+            <div class="row d-flex align-items-center flex-sm-row-reverse">
+                <div class="col-sm-12 col-md-4 button-tools align-self-center">
+                    <button class="btn btn-warning btn-lg btn-block RandomText">Random text</button>
+                    <button class="btn btn-secondary btn-lg btn-block disabled">Download JSON</button>
+
                 </div>
-                <div class="TextZone">
-                    <form action="">
-                        <textarea placeholder="Your awesome text here!" name="user-text" cols="30" rows="10" class="form-control"></textarea>
-                        <button class="btn btn-outline-primary btn-block btn-lg">Analyze this!</button>
-                    </form>
-                </div>
-                <div class="progress">
+                <div class="col-sm-12 col-md-8">
+                    <div class="Title text-center">
+                        <h1>Analyze texts with extreme precision</h1>
+                        <h4 class="my-3">Premium tool chosen by our consumers in 2018</h3>
+                    </div>
+                    <div class="TextZone">
+                        <form action="">
+                            <textarea placeholder="Your awesome text here!" name="user-text" cols="30" rows="10" class="form-control"></textarea>
+                            <button class="btn btn-outline-primary btn-block btn-lg">Analyze this!</button>
+                        </form>
+                    </div>
+                    <div class="progress">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="row d-flex align-items-center">
-            <div class="col-sm-12 col-md-8">
-                <div class="DisplayZone my-4 mx-2">
-                    <div contenteditable="true" name="display-zone" class="form-control" placeholder="Here you can see the final result">
-                        <code>
+        <div class="container-fluid">
+            <div class="row d-flex align-items-center">
+                <div class="col-sm-12 col-md-8">
+                    <div class="DisplayZone my-4 mx-2">
+                        <div contenteditable="true" spellcheck=false name="display-zone" class="form-control" placeholder="Here you can see the final result">
+                            <code>
                          <pre>
 
                          </pre>
                       </code>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-12 col-md-4 align-self-start mt-4">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Cras justo odio</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                </ul>
+                <div class="col-sm-12 col-md-4 align-self-start mt-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Morbi leo risus</li>
+                        <li class="list-group-item">Porta ac consectetur ac</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    <script src="index.js"></script>
-</body>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="index.js"></script>
+    </body>
 
 </html>

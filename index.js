@@ -15,45 +15,53 @@ function analyzeText(e) {
   e.preventDefault();
   const form = $(e.currentTarget);
   const text = form.find("textarea[name=user-text]");
-  const progressBarContainer = form.parent().siblings(".progress");
-  displayProgressBar(progressBarContainer);
+  $(".ErrorMessage").hide("slow");
 
-  const timer = setInterval(() => {
-    const progressBar = progressBarContainer.find("div.progress-bar");
+  if (text.val().trim().length > 0) {
+    const progressBarContainer = form.parent().siblings(".progress");
+    displayProgressBar(progressBarContainer);
 
-    if (progressBar.width() >= progressBarContainer.width()) {
-      progressBar
-        .removeClass("bg-info progress-bar-striped")
-        .addClass("bg-success")
-        .text("DONE!");
-      clearInterval(timer);
-    } else {
-      progressBar.width(progressBar.width() + 150);
+    const timer = setInterval(() => {
+      const progressBar = progressBarContainer.find("div.progress-bar");
+
+      if (progressBar.width() >= progressBarContainer.width()) {
+        progressBar
+          .removeClass("bg-info progress-bar-striped")
+          .addClass("bg-success")
+          .text("DONE!");
+        clearInterval(timer);
+      } else {
+        progressBar.width(progressBar.width() + 150);
+      }
+    }, 50);
+
+    const types = [",", ".", ";", ":", "?", "!", "¿", "¡"];
+    const words = text.val().split(" ");
+    const wordsParsed = [];
+
+    words.forEach(word => {
+      wordsParsed.push(new Word(word.trim()));
+      const lastCharacter = word.slice(-1);
+      if (types.indexOf(lastCharacter) !== -1) {
+        wordsParsed.push(new Word(lastCharacter));
+      }
+    });
+
+    const displayZone = $(".DisplayZone").find("code > pre");
+    displayZone.empty();
+    for (word of wordsParsed) {
+      word.print(displayZone);
     }
-  }, 50);
-
-  const types = [",", ".", ";", ":"];
-  const words = text.val().split(/[\s]+/i);
-
-  const wordsParsed = [];
-
-  words.forEach(word => {
-    wordsParsed.push(new Word(word.trim()));
-    const lastCharacter = word.slice(-1);
-    if (types.indexOf(lastCharacter !== -1)) {
-      wordsParsed.push(new Word(lastCharacter));
-    }
-  });
-
-  const displayZone = $(".DisplayZone").find("code > pre");
-
-  for (word of wordsParsed) {
-    displayZone.append(word.print(displayZone));
+  } else {
+    $(".ErrorMessage")
+      .empty()
+      .text("Our tool can't analyze something that is empty, can you?")
+      .show("slow");
   }
 }
 
 function Word(word) {
-  let punctuationSymbols = [",", ".", ";", ":"];
+  let punctuationSymbols = [",", ".", ";", ":", "?", "!", "¿", "¡"];
 
   this.word = word;
   this.length = function() {
@@ -66,11 +74,15 @@ function Word(word) {
     const htmlContainer =
       container instanceof jQuery ? container : $(container);
     htmlContainer.append(
-      `<span>
-      {
-          word: ${this.word},
-          length: ${this.length()},
-          type: ${this.type}
+      `<span class="JSON-object">
+      <span class="JSON-bracket">{</span>
+          <span class="JSON-key">word: </span><span class="JSON-value">${
+            this.word
+          }</span>,
+          <span class="JSON-key">length: </span><span class="JSON-value">${this.length()}</span>,
+          <span class="JSON-key">type: </span><span class="JSON-value">${
+            this.type
+          }</span>,
        },</span>`.trim()
     );
   };

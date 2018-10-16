@@ -1,0 +1,42 @@
+body {
+  background: #fafafa;
+}
+
+.Title {
+  font-size: 0.8em;
+}
+
+.Title > h1 {
+  font-family: Playfair Display, Arial, serif;
+  font-weight: bold;
+}
+
+.Title > h4 {
+  font-family: Muli, Verdana, serif;
+  font-style: italic;
+}
+
+.DisplayZone div[contenteditable] {
+  resize: none;
+  background-color: #242a30;
+  color: yellow;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  height: 500px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.DisplayZone div[contenteditable]:focus {
+  background-color: #181c20;
+}
+
+.DisplayZone div[contenteditable] > code span {
+  color: yellow;
+}
+@media screen and (min-width: 768px) {
+  .Title {
+    font-size: 1em;
+  }
+}

@@ -7,10 +7,14 @@ const downloadButton = buttonTools.find("a.DownloadJSON");
 
 analyzeButton.on("submit", analyzeText);
 randomTextButton.on("click", generateRandomText);
-downloadButton.on("click", makeJSONDownloadable);
+//downloadButton.on("click", makeJSONDownloadable);
 
-function makeJSONDownloadable(event = null) {
-  console.log("me activo colega");
+function makeJSONDownloadable(finalWords) {
+  const jsonData = encodeURIComponent(
+    JSON.stringify(finalWords.map(word => word.jsonFormat()))
+  );
+  const href = "data:text/json;charset=utf-8," + jsonData;
+  downloadButton.prop({ href: href, download: "words.json" });
 }
 
 function enableDownloadButton(button) {
@@ -18,30 +22,6 @@ function enableDownloadButton(button) {
     .removeClass("btn-secondary disabled")
     .addClass("btn-success")
     .css("cursor", "pointer");
-}
-
-function generateRandomText(e) {
-  const texts = [
-    `La virtualización es tecnología que permite crear múltiples entornos simulados o recursos dedicados desde un solo sistema de hardware físico. 
-
-    El software llamado "hipervisor" se conecta directamente con el hardware y permite dividir un sistema en entornos separados, distintos y seguros, conocidos como "máquinas virtuales" (VM). Estas VM dependen de la capacidad del hipervisor de separar los recursos de la máquina del hardware y distribuirlos adecuadamente. La virtualización le permite aprovechar al máximo sus inversiones anteriores.
-
-    La máquina física original en que está instalado el hipervisor se llama "host", y las VM que utilizan estos recursos se llaman "guests". Los guests utilizan los recursos informáticos, como la CPU, la memoria y el almacenamiento, como un conjunto de medios que pueden redistribuirse fácilmente. Los operadores pueden controlar las instancias virtuales de la CPU, la memoria, el almacenamiento y demás recursos, para que los invitados reciban lo que necesiten cuando lo necesiten.
-
-    Lo ideal es que todas las VM relacionadas se administren desde una sola consola de administración de virtualización basada en la web, que acelera todos los procesos. La virtualización le permite determinar cuánto poder de procesamiento, de almacenamiento y de memoria puede distribuir entre las VM. Además, los entornos están mejor protegidos, porque las VM están separadas entre sí, y son independientes del hardware de soporte.`,
-    `Un Proceso puede informalmente entenderse como un programa en ejecución. Formalmente un proceso es "Una unidad de actividad que se caracteriza por la ejecución de una secuencia de instrucciones, un estado actual, y un conjunto de recursos del sistema asociados".
-
-    Para entender mejor lo que es un proceso y la diferencia entre un programa y un proceso, A. S. Tanenbaum propone la analogía "Un científico computacional con mente culinaria hornea un pastel de cumpleaños para su hija; tiene la receta para un pastel de cumpleaños y una cocina bien equipada con todos los ingredientes necesarios, harina, huevo, azúcar, leche, etc."
-    
-     Situando cada parte de la analogía se puede decir que la receta representa el programa (el algoritmo), el científico computacional es el procesador y los ingredientes son las entradas del programa.
-     El proceso es la actividad que consiste en que el científico computacional vaya leyendo la receta, obteniendo los ingredientes y horneando el pastel.
-
-    Cada proceso tiene su contador de programa, registros y variables, aislados de otros procesos, incluso siendo el mismo programa en ejecución 2 veces. Cuando este último caso sucede, el sistema operativo usa la misma región de memoria de código, debido a que dicho código no cambiará, a menos que se ejecute una versión distinta del programa.`
-  ];
-
-  $(".TextZone")
-    .find("textarea[name=user-text]")
-    .val(texts[Math.floor(Math.random() * texts.length)]);
 }
 
 function analyzeText(e) {
@@ -68,17 +48,70 @@ function analyzeText(e) {
 }
 
 function analyzeEngine(words) {
-  const types = [",", ".", ";", ":", "?", "!", "¿", "¡"];
-  const wordsParsed = [];
+  const types = [
+    ",",
+    ".",
+    ";",
+    ":",
+    "?",
+    "!",
+    "¿",
+    "¡",
+    ")",
+    "(",
+    "{",
+    "}",
+    "[",
+    "]"
+  ];
+  let wordsParsed = [];
 
   words.forEach(word => {
-    wordsParsed.push(new Word(word.trim()));
+    const trimmedWord = word.trim();
     const lastCharacter = word.slice(-1);
     if (types.indexOf(lastCharacter) !== -1) {
+      wordsParsed.push(new Word(trimmedWord.slice(0, -1)));
       wordsParsed.push(new Word(lastCharacter));
+    } else {
+      wordsParsed.push(new Word(trimmedWord));
     }
   });
+
+  wordsParsed = wordsParsed.filter(word => word.length() !== 0);
+
   displayWordsData(wordsParsed);
+  setAchievements(wordsParsed);
+  return wordsParsed;
+}
+
+function setAchievements(finalWords) {
+  const achievementsContainer = $(".Achievements");
+  let achievements = "";
+  const numOfCharacters = finalWords
+    .map(word => word.length())
+    .reduce((length, nextLength) => {
+      return length + nextLength;
+    });
+  achievements += `<li class="list-group-item">This text contains <span class="badge badge-primary badge-pill">${numOfCharacters}</span> characters!</li>`;
+
+  const typesCounter = { Words: 0, Punctuations: 0 };
+  finalWords.forEach(word => {
+    word.type === "Word"
+      ? typesCounter["Words"]++
+      : typesCounter["Punctuations"]++;
+  });
+  achievements += `<li class="list-group-item">
+      Number of words: <span class="badge badge-primary badge-pill">${
+        typesCounter["Words"]
+      }</span>
+      </li>
+      <li class="list-group-item">
+      Number of punctuations: <span class="badge badge-primary badge-pill">${
+        typesCounter["Punctuations"]
+      }</span>
+      </li>
+      `;
+  achievementsContainer.append(achievements);
 }
 
 function displayWordsData(wordsParsed) {
@@ -102,10 +135,13 @@ function runProgressBar(words) {
           .addClass("bg-success")
           .text("DONE!, I will disappear soon... bye :( ");
 
-        analyzeEngine(words);
+        const finalWords = analyzeEngine(words);
+
         enableDownloadButton(downloadButton);
         clearInterval(timer);
+
         displayProgressBar(progressBarContainer, false);
+        makeJSONDownloadable(finalWords);
         $("html, body").animate({
           scrollTop: $(document).height() - $(window).height()
         });
@@ -164,4 +200,28 @@ function Word(word) {
 
     return jsonObject;
   };
+}
+
+function generateRandomText(e) {
+  const texts = [
+    `La virtualización es tecnología que permite crear múltiples entornos simulados o recursos dedicados desde un solo sistema de hardware físico. 
+
+    El software llamado "hipervisor" se conecta directamente con el hardware y permite dividir un sistema en entornos separados, distintos y seguros, conocidos como "máquinas virtuales" (VM). Estas VM dependen de la capacidad del hipervisor de separar los recursos de la máquina del hardware y distribuirlos adecuadamente. La virtualización le permite aprovechar al máximo sus inversiones anteriores.
+
+    La máquina física original en que está instalado el hipervisor se llama "host", y las VM que utilizan estos recursos se llaman "guests". Los guests utilizan los recursos informáticos, como la CPU, la memoria y el almacenamiento, como un conjunto de medios que pueden redistribuirse fácilmente. Los operadores pueden controlar las instancias virtuales de la CPU, la memoria, el almacenamiento y demás recursos, para que los invitados reciban lo que necesiten cuando lo necesiten.
+
+    Lo ideal es que todas las VM relacionadas se administren desde una sola consola de administración de virtualización basada en la web, que acelera todos los procesos. La virtualización le permite determinar cuánto poder de procesamiento, de almacenamiento y de memoria puede distribuir entre las VM. Además, los entornos están mejor protegidos, porque las VM están separadas entre sí, y son independientes del hardware de soporte.`,
+    `Un Proceso puede informalmente entenderse como un programa en ejecución. Formalmente un proceso es "Una unidad de actividad que se caracteriza por la ejecución de una secuencia de instrucciones, un estado actual, y un conjunto de recursos del sistema asociados".
+
+    Para entender mejor lo que es un proceso y la diferencia entre un programa y un proceso, A. S. Tanenbaum propone la analogía "Un científico computacional con mente culinaria hornea un pastel de cumpleaños para su hija; tiene la receta para un pastel de cumpleaños y una cocina bien equipada con todos los ingredientes necesarios, harina, huevo, azúcar, leche, etc."
+    
+     Situando cada parte de la analogía se puede decir que la receta representa el programa (el algoritmo), el científico computacional es el procesador y los ingredientes son las entradas del programa.
+     El proceso es la actividad que consiste en que el científico computacional vaya leyendo la receta, obteniendo los ingredientes y horneando el pastel.
+
+    Cada proceso tiene su contador de programa, registros y variables, aislados de otros procesos, incluso siendo el mismo programa en ejecución 2 veces. Cuando este último caso sucede, el sistema operativo usa la misma región de memoria de código, debido a que dicho código no cambiará, a menos que se ejecute una versión distinta del programa.`
+  ];
+
+  $(".TextZone")
+    .find("textarea[name=user-text]")
+    .val(texts[Math.floor(Math.random() * texts.length)]);
 }

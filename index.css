@@ -19,7 +19,8 @@ body {
   font-weight: bold;
 }
 
-.Title > h5 {
+.Title > h5,
+.Achievements {
   font-family: Muli, Verdana, serif;
   font-style: italic;
 }

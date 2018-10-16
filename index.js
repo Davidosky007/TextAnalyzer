@@ -69,7 +69,7 @@ function displayWordsData(wordsParsed) {
 
 function runProgressBar(words) {
   const progressBarContainer = MessagesZone.find(".progress");
-  displayProgressBar(progressBarContainer);
+  displayProgressBar(progressBarContainer, true);
   const progressBar = progressBarContainer.find("div.progress-bar");
 
   setTimeout(() => {
@@ -78,11 +78,15 @@ function runProgressBar(words) {
         progressBar
           .removeClass("bg-info progress-bar-striped")
           .addClass("bg-success")
-          .text("DONE!");
+          .text("DONE!, I will disappear soon... bye :( ");
 
         analyzeEngine(words);
         enableDownloadButton(downloadButton);
         clearInterval(timer);
+        displayProgressBar(progressBarContainer, false);
+        $("html, body").animate({
+          scrollTop: $(document).height() - $(window).height()
+        });
       } else {
         progressBar.width(progressBar.width() + 600);
       }
@@ -90,11 +94,17 @@ function runProgressBar(words) {
   }, 100);
 }
 
-function displayProgressBar(container) {
-  container.show().empty().append(`
+function displayProgressBar(container, show) {
+  if (show) {
+    container.show().empty().append(`
     <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar"
     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Working...</div>
 </div>`);
+  } else {
+    setTimeout(() => {
+      container.hide("slow").empty();
+    }, 5000);
+  }
 }
 
 function Word(word) {

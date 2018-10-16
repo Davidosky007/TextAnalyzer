@@ -21,10 +21,27 @@ function enableDownloadButton(button) {
 }
 
 function generateRandomText(e) {
-  $(".TextZone").find("textarea[name=user-text]")
-    .val(`La virtualización es tecnología que permite crear múltiples entornos simulados o recursos dedicados desde un solo sistema de hardware físico. El software llamado "hipervisor" se conecta directamente con el hardware y permite dividir un sistema en entornos separados, distintos y seguros, conocidos como "máquinas virtuales" (VM). Estas VM dependen de la capacidad del hipervisor de separar los recursos de la máquina del hardware y distribuirlos adecuadamente. La virtualización le permite aprovechar al máximo sus inversiones anteriores.
+  const texts = [
+    `La virtualización es tecnología que permite crear múltiples entornos simulados o recursos dedicados desde un solo sistema de hardware físico. 
+
+    El software llamado "hipervisor" se conecta directamente con el hardware y permite dividir un sistema en entornos separados, distintos y seguros, conocidos como "máquinas virtuales" (VM). Estas VM dependen de la capacidad del hipervisor de separar los recursos de la máquina del hardware y distribuirlos adecuadamente. La virtualización le permite aprovechar al máximo sus inversiones anteriores.
+
     La máquina física original en que está instalado el hipervisor se llama "host", y las VM que utilizan estos recursos se llaman "guests". Los guests utilizan los recursos informáticos, como la CPU, la memoria y el almacenamiento, como un conjunto de medios que pueden redistribuirse fácilmente. Los operadores pueden controlar las instancias virtuales de la CPU, la memoria, el almacenamiento y demás recursos, para que los invitados reciban lo que necesiten cuando lo necesiten.
-    Lo ideal es que todas las VM relacionadas se administren desde una sola consola de administración de virtualización basada en la web, que acelera todos los procesos. La virtualización le permite determinar cuánto poder de procesamiento, de almacenamiento y de memoria puede distribuir entre las VM. Además, los entornos están mejor protegidos, porque las VM están separadas entre sí, y son independientes del hardware de soporte.`);
+
+    Lo ideal es que todas las VM relacionadas se administren desde una sola consola de administración de virtualización basada en la web, que acelera todos los procesos. La virtualización le permite determinar cuánto poder de procesamiento, de almacenamiento y de memoria puede distribuir entre las VM. Además, los entornos están mejor protegidos, porque las VM están separadas entre sí, y son independientes del hardware de soporte.`,
+    `Un Proceso puede informalmente entenderse como un programa en ejecución. Formalmente un proceso es "Una unidad de actividad que se caracteriza por la ejecución de una secuencia de instrucciones, un estado actual, y un conjunto de recursos del sistema asociados".
+
+    Para entender mejor lo que es un proceso y la diferencia entre un programa y un proceso, A. S. Tanenbaum propone la analogía "Un científico computacional con mente culinaria hornea un pastel de cumpleaños para su hija; tiene la receta para un pastel de cumpleaños y una cocina bien equipada con todos los ingredientes necesarios, harina, huevo, azúcar, leche, etc."
+    
+     Situando cada parte de la analogía se puede decir que la receta representa el programa (el algoritmo), el científico computacional es el procesador y los ingredientes son las entradas del programa.
+     El proceso es la actividad que consiste en que el científico computacional vaya leyendo la receta, obteniendo los ingredientes y horneando el pastel.
+
+    Cada proceso tiene su contador de programa, registros y variables, aislados de otros procesos, incluso siendo el mismo programa en ejecución 2 veces. Cuando este último caso sucede, el sistema operativo usa la misma región de memoria de código, debido a que dicho código no cambiará, a menos que se ejecute una versión distinta del programa.`
+  ];
+
+  $(".TextZone")
+    .find("textarea[name=user-text]")
+    .val(texts[Math.floor(Math.random() * texts.length)]);
 }
 
 function analyzeText(e) {
@@ -34,6 +51,12 @@ function analyzeText(e) {
   $(".ErrorMessage").hide("slow");
 
   if (text.val().trim().length > 0) {
+    const displayZone = $(".DisplayZone").find("code > pre");
+    displayZone
+      .empty()
+      .append(
+        '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>'
+      );
     const words = text.val().split(" ");
     runProgressBar(words);
   } else {

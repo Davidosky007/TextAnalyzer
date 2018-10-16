@@ -20,6 +20,25 @@ body {
   font-style: italic;
 }
 
+.ButtonTools button.DownloadJSON {
+  cursor: not-allowed;
+}
+
+.MessagesZone .CustomizedProgress {
+  height: 45px;
+  display: none;
+  text-align: center;
+}
+
+.MessagesZone .CustomizedProgress .progress-bar {
+  height: 45px;
+  font-size: 1.5em;
+  font-weight: bold;
+  width: 0;
+  max-width: 100%;
+  text-align: center;
+}
+
 .DisplayZone div[contenteditable] {
   resize: none;
   background-color: #242a30;

@@ -1,8 +1,25 @@
-const analyzeButton = $(".TextZone").find("form");
-analyzeButton.on("submit", analyzeText);
+const MessagesZone = $(".MessagesZone");
+const buttonTools = $(".ButtonTools");
 
-const randomTextButton = $(".button-tools").find("button.RandomText");
+const analyzeButton = $(".TextZone").find("form");
+const randomTextButton = buttonTools.find("button.RandomText");
+const downloadButton = buttonTools.find("button.DownloadJSON");
+
+analyzeButton.on("submit", analyzeText);
 randomTextButton.on("click", generateRandomText);
+downloadButton.on("click", makeJSONDownloadable);
+
+function makeJSONDownloadable(event = null) {
+  console.log("me activo colega");
+}
+
+function enableDownloadButton(button) {
+  button
+    .prop("disabled", false)
+    .removeClass("btn-secondary")
+    .addClass("btn-success")
+    .css("cursor", "pointer");
+}
 
 function generateRandomText(e) {
   $(".TextZone").find("textarea[name=user-text]")
@@ -18,46 +35,66 @@ function analyzeText(e) {
   $(".ErrorMessage").hide("slow");
 
   if (text.val().trim().length > 0) {
-    const progressBarContainer = form.parent().siblings(".progress");
-    displayProgressBar(progressBarContainer);
+    const words = text.val().split(" ");
+    runProgressBar(words);
+  } else {
+    MessagesZone.find(".ErrorMessage")
+      .empty()
+      .text("Our tool can't analyze something that is empty, can you?")
+      .show("slow");
+  }
+}
 
+function analyzeEngine(words) {
+  const types = [",", ".", ";", ":", "?", "!", "¿", "¡"];
+  const wordsParsed = [];
+
+  words.forEach(word => {
+    wordsParsed.push(new Word(word.trim()));
+    const lastCharacter = word.slice(-1);
+    if (types.indexOf(lastCharacter) !== -1) {
+      wordsParsed.push(new Word(lastCharacter));
+    }
+  });
+  displayWordsData(wordsParsed);
+}
+
+function displayWordsData(wordsParsed) {
+  const displayZone = $(".DisplayZone").find("code > pre");
+  displayZone.empty();
+  for (word of wordsParsed) {
+    word.print(displayZone);
+  }
+}
+
+function runProgressBar(words) {
+  const progressBarContainer = MessagesZone.find(".progress");
+  displayProgressBar(progressBarContainer);
+  const progressBar = progressBarContainer.find("div.progress-bar");
+
+  setTimeout(() => {
     const timer = setInterval(() => {
-      const progressBar = progressBarContainer.find("div.progress-bar");
-
       if (progressBar.width() >= progressBarContainer.width()) {
         progressBar
           .removeClass("bg-info progress-bar-striped")
           .addClass("bg-success")
           .text("DONE!");
+
+        analyzeEngine(words);
+        enableDownloadButton(downloadButton);
         clearInterval(timer);
       } else {
-        progressBar.width(progressBar.width() + 150);
+        progressBar.width(progressBar.width() + 600);
       }
     }, 50);
+  }, 100);
+}
 
-    const types = [",", ".", ";", ":", "?", "!", "¿", "¡"];
-    const words = text.val().split(" ");
-    const wordsParsed = [];
-
-    words.forEach(word => {
-      wordsParsed.push(new Word(word.trim()));
-      const lastCharacter = word.slice(-1);
-      if (types.indexOf(lastCharacter) !== -1) {
-        wordsParsed.push(new Word(lastCharacter));
-      }
-    });
-
-    const displayZone = $(".DisplayZone").find("code > pre");
-    displayZone.empty();
-    for (word of wordsParsed) {
-      word.print(displayZone);
-    }
-  } else {
-    $(".ErrorMessage")
-      .empty()
-      .text("Our tool can't analyze something that is empty, can you?")
-      .show("slow");
-  }
+function displayProgressBar(container) {
+  container.show().empty().append(`
+    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar"
+    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Working...</div>
+</div>`);
 }
 
 function Word(word) {
@@ -86,11 +123,4 @@ function Word(word) {
        },</span>`.trim()
     );
   };
-}
-
-function displayProgressBar(container) {
-  container.empty().append(`
-    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar"
-    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Working...</div>
-</div>`);
 }

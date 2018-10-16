@@ -17,12 +17,8 @@
             <div class="progress CustomizedProgress"></div>
         </div>
         <div class="container-fluid">
-            <div class="row d-flex align-items-center flex-sm-row-reverse">
-                <div class="col-sm-12 col-md-4 align-self-center ButtonTools">
-                    <button class="btn btn-warning btn-lg btn-block RandomText">Random text</button>
-                    <a class="btn btn-secondary btn-lg btn-block DownloadJSON disabled">Download JSON</a>
+            <div class="row d-flex align-items-center">
 
-                </div>
                 <div class="col-sm-12 col-md-8">
                     <div class="Title text-center">
                         <h1 class="d-flex align-items-center justify-content-center">
@@ -36,14 +32,31 @@
                     </div>
                     <div class="TextZone">
                         <form action="">
-                            <textarea placeholder="Your awesome text here!" name="user-text" cols="30" rows="10" class="form-control"></textarea>
-                            <button type="submit" class="btn btn-outline-primary btn-block btn-lg font-italic AnalyzeButton">Analyze this!</button>
+                            <div class="card">
+                                <div class="card-header">
+                                    Results will be show here.
+                                </div>
+                                <div class="card-body">
+                                    <textarea placeholder="Your awesome text here!" name="user-text" cols="30" rows="10" class="form-control"></textarea>
+                                    <button type="submit" class="btn btn-outline-primary btn-block btn-lg font-italic AnalyzeButton">Analyze this!</button>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Last-search: 2 days ago
+                                </div>
+                            </div>
+
                         </form>
                     </div>
 
                 </div>
+                <div class="col-sm-12 col-md-4 align-self-center ButtonTools">
+                    <button class="btn btn-warning btn-lg btn-block RandomText my-2">Random text</button>
+                    <a class="btn btn-secondary btn-lg btn-block DownloadJSON disabled my-1">Download JSON</a>
+                </div>
             </div>
         </div>
+
+
         <div class="container-fluid">
             <div class="row d-flex align-items-center">
                 <div class="col-sm-12 col-md-8">
@@ -51,6 +64,7 @@
                         <div contenteditable="true" spellcheck=false name="display-zone" class="form-control" placeholder="Here you can see the final result">
                             <code><pre></pre></code>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-4 align-self-start mt-4">

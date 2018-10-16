@@ -87,20 +87,29 @@ function analyzeEngine(words) {
 function setAchievements(finalWords) {
   const achievementsContainer = $(".Achievements");
   let achievements = "";
+  achievements += achievementCharacters(finalWords);
+  achievements += achievementTypes(finalWords);
+
+  achievementsContainer.empty().append(achievements);
+}
+
+function achievementCharacters(finalWords) {
   const numOfCharacters = finalWords
     .map(word => word.length())
     .reduce((length, nextLength) => {
       return length + nextLength;
     });
-  achievements += `<li class="list-group-item">This text contains <span class="badge badge-primary badge-pill">${numOfCharacters}</span> characters!</li>`;
+  return `<li class="list-group-item">This text contains <span class="badge badge-primary badge-pill">${numOfCharacters}</span> characters!</li>`;
+}
 
+function achievementTypes(finalWords) {
   const typesCounter = { Words: 0, Punctuations: 0 };
   finalWords.forEach(word => {
     word.type === "Word"
       ? typesCounter["Words"]++
       : typesCounter["Punctuations"]++;
   });
-  achievements += `<li class="list-group-item">
+  return `<li class="list-group-item">
       Number of words: <span class="badge badge-primary badge-pill">${
         typesCounter["Words"]
       }</span>
@@ -111,7 +120,6 @@ function setAchievements(finalWords) {
       }</span>
       </li>
       `;
-  achievementsContainer.append(achievements);
 }
 
 function displayWordsData(wordsParsed) {
